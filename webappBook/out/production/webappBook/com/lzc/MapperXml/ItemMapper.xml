@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzc.Mapper.ItemMapper">
+    <resultMap id="itemResultMap" type="com.lzc.entity.Item">
+        <id property="iid" column="iid"></id>
+        <result property="itemName" column="item_name"></result>
+        <result property="price" column="price"></result>
+        <result property="description" column="description"></result>
+        <result property="type" column="type"></result>
+    </resultMap>
+    <select id="getItems" parameterType="com.lzc.entity.Item" resultMap="itemResultMap">
+       select * from item
+        <where>
+            <if test="itemName != null and itemName !=''">
+                item_name  like '%${itemName}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getItemById" parameterType="int" resultMap="itemResultMap">
+        select * from item where iid = #{iid}
+    </select>
+    <insert id="addItem" parameterType="com.lzc.entity.Item">
+        insert into item(`item_name`,`price`,`description`,`type`)
+        values(#{itemName},#{price},#{description},#{type})
+    </insert>
+    <update id="uodateItem" parameterType="com.lzc.entity.Item" >
+        update item
+        set `item_name`=#{itemName},`price`=#{price},`description`=#{description},`type`=#{type}
+        where iid = #{iid}
+    </update>
+    <delete id="deleteItem" >
+        delete from item where iid = #{iid}
+    </delete>
+</mapper>
